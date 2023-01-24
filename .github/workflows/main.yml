@@ -1,0 +1,23 @@
+name: SampleWorkflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI or API.
+on: workflow_dispatch
+
+env:
+  AZURE_RESOURCE_GROUP: oardevol-hybrid
+  CLUSTER_NAME: oardevol-kind
+  
+jobs:
+  deploy_kubernetes:
+    runs-on: ubuntu-latest
+    steps:    
+    - name: Login for az cli commands 
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+    - name: Get Azure SubscriptionId
+      run: |
+        CURRENT_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+        echo "AZURE_SUBSCRIPTION_ID=$CURRENT_SUBSCRIPTION_ID" >> $GITHUB_ENV
+        echo "Current SubscriptionId: $CURRENT_SUBSCRIPTION_ID"
