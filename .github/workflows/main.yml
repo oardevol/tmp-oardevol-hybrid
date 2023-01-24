@@ -21,8 +21,13 @@ jobs:
         CURRENT_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
         echo "AZURE_SUBSCRIPTION_ID=$CURRENT_SUBSCRIPTION_ID" >> $GITHUB_ENV
         echo "Current SubscriptionId: $CURRENT_SUBSCRIPTION_ID"
-        
+    
+    - name: Kubectl tool installer
+      uses: Azure/setup-kubectl@v3
+
     - name: Run proxy
       run: |
         az config set extension.use_dynamic_install=yes_without_prompt
-        az connectedk8s proxy --name $CLUSTER_NAME -g $AZURE_RESOURCE_GROUP
+        az connectedk8s proxy --name $CLUSTER_NAME -g $AZURE_RESOURCE_GROUP > /dev/null 2>&1 &
+        echo "Command Invoked in background!"
+        kubectl get pods
