@@ -21,3 +21,7 @@ jobs:
         CURRENT_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
         echo "AZURE_SUBSCRIPTION_ID=$CURRENT_SUBSCRIPTION_ID" >> $GITHUB_ENV
         echo "Current SubscriptionId: $CURRENT_SUBSCRIPTION_ID"
+        
+    - name: Run proxy
+      run: |
+        az connectedk8s proxy --name $CLUSTER_NAME -g $AZURE_RESOURCE_GROUP
