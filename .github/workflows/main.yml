@@ -25,10 +25,13 @@ jobs:
     - name: Kubectl tool installer
       uses: Azure/setup-kubectl@v3
 
-    - name: Run proxy
+    - name: Configure az
       run: |
         az config set extension.use_dynamic_install=yes_without_prompt
         az extension add --name connectedk8s
+        
+    - name: Run proxy
+      run: |
         az connectedk8s proxy --name $CLUSTER_NAME -g $AZURE_RESOURCE_GROUP &
         echo "Wating 30 secs for proxy to be up & running."
         sleep 30
