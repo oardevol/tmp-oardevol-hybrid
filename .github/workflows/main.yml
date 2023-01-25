@@ -28,8 +28,8 @@ jobs:
     - name: Run proxy
       run: |
         az config set extension.use_dynamic_install=yes_without_prompt
-        az connectedk8s proxy --name $CLUSTER_NAME -g $AZURE_RESOURCE_GROUP &
+        az connectedk8s proxy --name $CLUSTER_NAME -g $AZURE_RESOURCE_GROUP > /dev/null 2>&1 &
         echo "Wating 30 secs for proxy to be up & running."
-        sleep 60
+        sleep 30
         echo "Sleep done, invoking get pods!"
         kubectl get pods
